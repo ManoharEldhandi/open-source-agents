@@ -87,13 +87,16 @@ function validateIdentity(record: Record<string, unknown>): void {
 
 function validateLifecycle(record: Record<string, unknown>): void {
   if (
-    !(SPAN_KINDS as readonly string[]).includes(String(record.kind)) ||
-    !['started', 'finished'].includes(String(record.phase))
+    typeof record.kind !== 'string' ||
+    !(SPAN_KINDS as readonly string[]).includes(record.kind) ||
+    typeof record.phase !== 'string' ||
+    !['started', 'finished'].includes(record.phase)
   )
     throw new Error('Invalid log event lifecycle.');
   if (
-    record.phase === 'finished' &&
-    !['completed', 'failed', 'interrupted'].includes(String(record.status))
+    (record.phase === 'finished' || record.status !== undefined) &&
+    (typeof record.status !== 'string' ||
+      !['completed', 'failed', 'interrupted'].includes(record.status))
   )
     throw new Error('Invalid terminal log status.');
 }

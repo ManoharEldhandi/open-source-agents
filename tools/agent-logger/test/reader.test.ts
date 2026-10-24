@@ -32,3 +32,31 @@ test('reader rejects malformed schemas and unsafe numeric fields', async () => {
   await writeFile(filePath, 'not-json\n');
   await assert.rejects(readLog(filePath));
 });
+
+test('reader rejects lifecycle fields with incorrect JSON types', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'agent-log-lifecycle-'));
+  const filePath = join(directory, 'event.jsonl');
+  const event = {
+    schemaVersion: 1,
+    sequence: 1,
+    timestamp: '2026-01-01T00:00:00.000Z',
+    runId: '00000000-0000-4000-8000-000000000001',
+    spanId: '00000000-0000-4000-8000-000000000002',
+    name: 'task',
+    kind: 'run',
+    phase: 'finished',
+    status: 'completed',
+  };
+  for (const invalid of [
+    { kind: ['run'] },
+    { phase: ['finished'] },
+    { status: ['completed'] },
+    { phase: 'started', status: ['completed'] },
+    { status: undefined },
+  ]) {
+    await writeFile(filePath, JSON.stringify({ ...event, ...invalid }) + '\n');
+    await assert.rejects(readLog(filePath));
+  }
+  await writeFile(filePath, JSON.stringify(event) + '\n');
+  assert.equal((await readLog(filePath)).length, 1);
+});
