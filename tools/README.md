@@ -47,4 +47,4 @@ tools/<project-slug>/
 
 | Tool Directory | Description | Category / Protocol | Contributor |
 | :--- | :--- | :--- | :--- |
-| [agent-logger](agent-logger/) | Local agent logging SDK with an optional Google ADK plugin, private JSONL files, and a log viewer. | TypeScript / Google ADK | [Manohar Eldhandi](https://github.com/ManoharEldhandi) |
+| [agent-logger](agent-logger/) | Agent execution logging SDK with typed wrappers, stream tracing, private JSONL storage, a CLI viewer, and an optional Google ADK plugin. | TypeScript / Google ADK | [Manohar Eldhandi](https://github.com/ManoharEldhandi) |

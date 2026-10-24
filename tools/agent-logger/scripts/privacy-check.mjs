@@ -16,7 +16,15 @@ const listed = execFileSync(
   ['ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', scope],
   { cwd: repository, encoding: 'utf8' },
 );
-const candidates = [...new Set(listed.split('\0').filter(Boolean))];
+const deleted = new Set(
+  execFileSync('git', ['ls-files', '-z', '--deleted', '--', scope], {
+    cwd: repository,
+    encoding: 'utf8',
+  }).split('\0'),
+);
+const candidates = [...new Set(listed.split('\0').filter(Boolean))].filter(
+  (path) => !deleted.has(path),
+);
 const localRoots = [homedir(), tmpdir(), repository].filter((value) => value.length > 1);
 const secret = process.env.GOOGLE_API_KEY?.trim();
 const machinePath = /\/(?:Users|home)\/[^\s"'`]+|[A-Za-z]:\\Users\\[^\s"'`]+/u;

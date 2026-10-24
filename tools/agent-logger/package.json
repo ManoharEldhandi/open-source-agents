@@ -1,7 +1,7 @@
 {
-  "name": "@meldhandi/agent-logger",
+  "name": "@manohareldhandi/agent-logger",
   "version": "0.1.0",
-  "description": "Private local agent logs with a Google ADK plugin and typed tool wrappers.",
+  "description": "Local execution logs for AI agents, with typed wrappers, streaming support, and an optional Google ADK plugin.",
   "license": "MIT",
   "author": "Manohar Eldhandi",
   "repository": {
@@ -35,7 +35,6 @@
     "dist/**/*.js",
     "dist/**/*.d.ts",
     "README.md",
-    "RELEASING.md",
     "LICENSE"
   ],
   "bin": {
@@ -57,8 +56,7 @@
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build",
     "test:package": "npm run build && node --env-file-if-exists=.env scripts/package-smoke.mjs",
     "check:privacy": "node --env-file-if-exists=.env scripts/privacy-check.mjs",
-    "release:check": "npm run check:privacy && npm run check && npm audit && node --env-file-if-exists=.env scripts/package-smoke.mjs",
-    "test:repo": "node scripts/repository-smoke.mjs",
+    "verify": "npm run check:privacy && npm run check && npm audit && node --env-file-if-exists=.env scripts/package-smoke.mjs",
     "prepack": "npm run check:privacy && npm run check"
   },
   "peerDependencies": {

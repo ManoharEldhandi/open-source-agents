@@ -19,7 +19,7 @@ const run = (file, args, cwd = root) =>
 const [packed] = JSON.parse(run(npm, ['pack', '--ignore-scripts', '--json']));
 assert.ok(
   packed.files.every(({ path }) =>
-    /^(dist\/|README\.md$|RELEASING\.md$|LICENSE$|package\.json$)/u.test(path),
+    /^(dist\/|README\.md$|LICENSE$|package\.json$)/u.test(path),
   ),
 );
 const archive = gunzipSync(await readFile(join(root, packed.filename)));
